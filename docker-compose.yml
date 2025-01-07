@@ -1,0 +1,24 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DATABASE: app
+    volumes:
+      - abiplaner-db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  sso:
+    image: quay.io/keycloak/keycloak:26.0.5
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - 9090:8080
+    command: ["start-dev", "--import-realm"]
+    volumes:
+      - ./iserv.json:/opt/keycloak/data/import/iserv.realm.json
+
+volumes:
+  abiplaner-db:
