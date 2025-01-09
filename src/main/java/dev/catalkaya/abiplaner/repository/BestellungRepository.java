@@ -140,7 +140,7 @@ public class BestellungRepository {
     public List<Bestellung> checkPayment() throws SQLException {
         List<Bestellung> bestellungen = new ArrayList<>();
 
-        String sql = "SELECT id, benutzer_email, anzahl_essenskarte, anzahl_abendkarte FROM bestellung " +
+        String sql = "SELECT id, benutzer_id, benutzer_email, anzahl_essenskarte, anzahl_abendkarte FROM bestellung " +
                 "WHERE bezahlt = true AND email_versendet = false;";
         try (Connection con = postgres.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -148,7 +148,7 @@ public class BestellungRepository {
                 while (rs.next()) {
                     bestellungen.add(new Bestellung(
                             rs.getInt("id"),
-                            "",
+                            rs.getString("benutzer_id"),
                             rs.getString("benutzer_email"),
                             rs.getInt("anzahl_essenskarte"),
                             rs.getInt("anzahl_abendkarte"),

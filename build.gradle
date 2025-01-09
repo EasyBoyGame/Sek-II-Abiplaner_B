@@ -9,8 +9,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.quarkiverse.barcode:quarkus-qrcodegen:1.0.0'
-    implementation 'io.quarkiverse.barcode:quarkus-zxing:1.0.0'
+    implementation 'com.google.zxing:core:3.5.3'
+    implementation 'com.google.zxing:javase:3.5.3'
     implementation 'io.quarkus:quarkus-scheduler'
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
     implementation 'io.quarkus:quarkus-rest'

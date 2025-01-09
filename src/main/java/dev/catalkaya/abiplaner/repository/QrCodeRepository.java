@@ -1,39 +1,62 @@
 package dev.catalkaya.abiplaner.repository;
 
-import io.nayuki.qrcodegen.QrCode;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import jakarta.enterprise.context.ApplicationScoped;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+@ApplicationScoped
 public class QrCodeRepository {
 
-    private final String path = "http://localhost:8080";
+    private final String BASEURL = "http://localhost:5173";
+    private final String OUTPUTPATH = "output";
 
 
-    public void newQrCode(String benutzerId, int anzahlEssenskarte, int anzahlAbendkarte) throws IOException {
-        int anzahlKarten = anzahlEssenskarte + anzahlAbendkarte;
+    public void createAll(String benutzerID, int anzahlEssenskarte, int anzahlAbendkarte){
+        int anzahlKarten = anzahlAbendkarte + anzahlEssenskarte;
 
+        //creates QRCode for every available card
         for (int i = 1; i == anzahlKarten; i++) {
-            byte[] bytes = ("" + benutzerId + i).getBytes(StandardCharsets.UTF_8);
-            String url = path + "/" + bytes;
+            byte[] bytes = (benutzerID + "-" + i).getBytes(StandardCharsets.UTF_8);
+
+            //byte[] bytes2 = "%5BB@7ed67150".getBytes(StandardCharsets.UTF_8);
+
+            //creates the final URL that will be put inside QRCode
+            String url = BASEURL + "/" + bytes;
 
             try {
-                QrCode qr0 = QrCode.encodeText(url, QrCode.Ecc.MEDIUM);
-                BufferedImage img = toImage(qr0, 4, 10);
-                ImageIO.write(img, "png", new File("qr-code.png"));
+                String filePath = createFilePath(benutzerID, i);
 
-            }
-            catch (IOException ex){
-                ex.printStackTrace();
+                BitMatrix matrix = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, 250, 250);
+                MatrixToImageWriter.writeToPath(matrix, "jpg", Paths.get(filePath));
+            } catch (WriterException | IOException e) {
+                throw new RuntimeException(e);
             }
         }
-
     }
 
+    /**
+     * Checks if targetfolder and parent directories already exist and creates them if needed
+     * @param benutzerID benutzerId des Nutzers
+     * @param cardID kartennummer
+     * @return finished file path
+     * @throws IOException ioexception
+     */
+    private String createFilePath(String benutzerID, int cardID) throws IOException {
+        Path folderPath = Paths.get(OUTPUTPATH + "/" + benutzerID);
 
+        if (!Files.exists(folderPath)) {
+            Files.createDirectories(folderPath);
+        }
+
+        return OUTPUTPATH + "/" + benutzerID + "/" + benutzerID + "_" + cardID + ".jpg";
+    }
 }

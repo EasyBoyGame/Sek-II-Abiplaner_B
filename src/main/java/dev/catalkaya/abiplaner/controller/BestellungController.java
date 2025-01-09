@@ -3,6 +3,7 @@ package dev.catalkaya.abiplaner.controller;
 import dev.catalkaya.abiplaner.model.Bestellung;
 import dev.catalkaya.abiplaner.repository.BestellungRepository;
 import dev.catalkaya.abiplaner.repository.QrCodeRepository;
+import io.quarkus.mailer.Attachment;
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.Mailer;
 import io.quarkus.scheduler.Scheduled;
@@ -11,8 +12,10 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 //TODO GENERIERUNG QR-CODE + ANHÄNGEN AN EMAIL
@@ -99,7 +102,7 @@ public class BestellungController {
             List<Bestellung> bestellungen = bestellungRepository.checkPayment();
 
             for(Bestellung bestellung:bestellungen){
-                qrCodeRepository.newQrCode(bestellung.benutzerId(), bestellung.anzahlEssenskarte(), bestellung.anzahlAbendkarte());
+                qrCodeRepository.createAll(bestellung.benutzerId(), bestellung.anzahlEssenskarte(), bestellung.anzahlAbendkarte());
                 String benutzerEmail = bestellung.benutzerEmail();
                 String[] nameArray = benutzerEmail.split("@");
                 nameArray = nameArray[0].split("\\.");
@@ -120,15 +123,23 @@ public class BestellungController {
 
                 text += "\n\n\nViel Spaß beim Abiball!\n\n\n\n\n"+ "Adresse:\n" + "Ilseder Hütte 14,\n31241 Ilsede,\nDeutschland";
 
-                mailer.send(Mail.withText(bestellung.benutzerEmail(), "Abiballkarten",text));
+
+                String path = "D:/Dokumente/Schule/2_EK_Informatik/AbiplanerQuark/abiplaner/build/classes/java/main/output/" + bestellung.benutzerId();
+                File dir = new File(path);
+                File[] files = dir.listFiles();
+
+                ArrayList<Attachment> attachments = new ArrayList<>();
+                for(File file: files){
+                    attachments.add(new Attachment(file.getName(), file, "image/jpg"));
+                }
+
+                mailer.send(Mail.withText(bestellung.benutzerEmail(), "Abiballkarten",text).setAttachments(attachments));
 
                 bestellungRepository.mailSend(bestellung.id());
             }
         }
         catch (SQLException ex){
             throw new Error("cronJob failed!");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }
