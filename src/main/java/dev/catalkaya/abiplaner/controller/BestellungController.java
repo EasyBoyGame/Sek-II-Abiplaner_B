@@ -13,13 +13,12 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO GENERIERUNG QR-CODE + ANHÄNGEN AN EMAIL
-//TODO LOGIN VIA ISERV
+
+// TODO LOGIN VIA ISERV
 
 
 @Path("/api/v1/bestellung")

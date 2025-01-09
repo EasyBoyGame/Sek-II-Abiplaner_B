@@ -9,5 +9,18 @@ CREATE TABLE bestellung
     email_versendet    BOOLEAN NOT NULL DEFAULT false,
     PRIMARY KEY (id)
 );
-
 CREATE INDEX bestellung_benutzer_id on bestellung (benutzer_id);
+
+
+CREATE TABLE checkIn
+(
+    karten_nr           TEXT    NOT NULL,
+    checked             BOOLEAN NOT NULL DEFAULT false,
+    PRIMARY KEY (karten_nr)
+);
+
+
+
+
+
+
