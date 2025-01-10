@@ -20,7 +20,6 @@ import java.util.List;
 
 // TODO LOGIN VIA ISERV
 
-
 @Path("/api/v1/bestellung")
 public class BestellungController {
 
@@ -96,7 +95,7 @@ public class BestellungController {
 
     // Überprüfe ob Bestellungen bezahlt wurden
     @Scheduled(every = "1m")
-    void cronJobCheckForPayment() throws SQLException {
+    void cronJobCheckForPayment() {
         try {
             List<Bestellung> bestellungen = bestellungRepository.checkPayment();
 
