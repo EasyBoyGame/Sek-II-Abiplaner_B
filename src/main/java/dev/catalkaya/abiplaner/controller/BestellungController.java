@@ -12,13 +12,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.io.File;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-
-
-// TODO LOGIN VIA ISERV
 
 @Path("/api/v1/bestellung")
 public class BestellungController {
@@ -92,7 +87,7 @@ public class BestellungController {
         }
     }
 
-
+/*
     // Überprüfe ob Bestellungen bezahlt wurden
     @Scheduled(every = "1m")
     void cronJobCheckForPayment() {
@@ -140,4 +135,5 @@ public class BestellungController {
             throw new Error("cronJob failed!");
         }
     }
+    */
 }
