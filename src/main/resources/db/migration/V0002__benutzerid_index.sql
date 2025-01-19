@@ -1,0 +1,1 @@
+CREATE INDEX idx_bestellung_benutzer_id ON bestellung(benutzer_id);

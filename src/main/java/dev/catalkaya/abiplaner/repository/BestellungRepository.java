@@ -108,6 +108,18 @@ public class BestellungRepository {
     }
 
 
+    //
+    public void updateBestellStatus(int bestellungsId, boolean bezahlt) throws SQLException {
+        String sql = "UPDATE bestellung SET bezahlt = ? WHERE id = ? ";
+        try (Connection con = postgres.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setBoolean(1, bezahlt);
+            ps.setInt(2, bestellungsId);
+            ps.execute();
+        }
+    }
+
+
     // prüfe ob Bestellung existiert
     public boolean existsBestellung(int bestellungId) throws SQLException {
         String sql = "SELECT id FROM bestellung WHERE id = ?;";

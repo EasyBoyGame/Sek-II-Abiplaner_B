@@ -1,16 +1,22 @@
 package dev.catalkaya.abiplaner.controller;
 
 import dev.catalkaya.abiplaner.model.Bestellung;
+import dev.catalkaya.abiplaner.model.BestellungRequest;
+import dev.catalkaya.abiplaner.model.UpdateBestellStatus;
 import dev.catalkaya.abiplaner.repository.BestellungRepository;
 import dev.catalkaya.abiplaner.repository.QrCodeRepository;
 import io.quarkus.mailer.Attachment;
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.Mailer;
 import io.quarkus.scheduler.Scheduled;
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.jwt.Claims;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -25,6 +31,8 @@ public class BestellungController {
     BestellungRepository bestellungRepository;
     @Inject
     QrCodeRepository qrCodeRepository;
+    @Inject
+    JsonWebToken jwt;
 
     @Inject
     Mailer mailer;
@@ -32,6 +40,7 @@ public class BestellungController {
 
     // alle vorhandenen Bestellungen abfragen
     @GET
+    @RolesAllowed({"abiplaner-admin"})
     public List<Bestellung> getBestellungen() {
         try {
             return bestellungRepository.getBestellungen();
@@ -42,27 +51,43 @@ public class BestellungController {
     }
 
 
+    @PATCH
+    @RolesAllowed({"abiplaner-admin"})
+    public void checkBestellung(UpdateBestellStatus status){
+        try {
+            if(bestellungRepository.existsBestellung(status.id())){
+                bestellungRepository.updateBestellStatus(status.id(), status.bezahlt());
+            }
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+            throw new NotFoundException();
+        }
+    }
+
+
     // erstellen einer neuen Bestellung
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response newBestellung(Bestellung request) throws SQLException {
-        if (!bestellungRepository.existsBenutzer(request.benutzerId())) {
+    @Authenticated
+    public Response newBestellung(BestellungRequest request) throws SQLException {
+        if (!bestellungRepository.existsBenutzer(jwt.getSubject())) {
             try {
-                bestellungRepository.newBestellung(request.benutzerId(), request.benutzerEmail(), request.anzahlEssenskarte(), request.anzahlAbendkarte());
+                bestellungRepository.newBestellung(jwt.getSubject(), jwt.getClaim(Claims.email), request.anzahlEssenskarten(), request.anzahlAbendkarten());
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 throw new InternalServerErrorException();
             }
         } else {
             try {
-                bestellungRepository.updateBestellung(request.benutzerId(), request.anzahlEssenskarte(), request.anzahlAbendkarte(), request.bezahlt());
+                bestellungRepository.updateBestellung(jwt.getSubject(), request.anzahlEssenskarten(), request.anzahlAbendkarten(), false);
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 throw new InternalServerErrorException();
             }
         }
-        int summe = request.anzahlEssenskarte() * EKPREIS + request.anzahlAbendkarte() * AKPREIS;
+        int summe = request.anzahlEssenskarten() * EKPREIS + request.anzahlAbendkarten() * AKPREIS;
         return Response.ok(summe).build();
     }
 

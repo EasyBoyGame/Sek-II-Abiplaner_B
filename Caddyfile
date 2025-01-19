@@ -1,4 +1,4 @@
-abiplaner.hopto.org {
+abiplaner.catalkaya.dev {
         reverse_proxy /api/* backend:8080
         reverse_proxy /realms/* sso:9090
         reverse_proxy /resources/* sso:9090
