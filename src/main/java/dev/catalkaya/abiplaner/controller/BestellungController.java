@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.regex.*;
 
 // TODO BESTÄTIGUNGSMAIL AN ALLE EINMAL SENDEN
+// test
 
 
 @Path("/api/v1/bestellung")
