@@ -97,7 +97,7 @@ public class BestellungController {
                     bestellungRepository.updateBestellung(jwt.getSubject(), request.anzahlEssenskarten(), request.anzahlAbendkarten(), false);
                     sendPaymentRequest(jwt.getClaim(Claims.email), request.anzahlEssenskarten(), request.anzahlAbendkarten());
                 } else {
-                    return Response.status(Response.Status.BAD_REQUEST).entity("Die gewünschte Anzahl an Karten ist leider nciht mehr verfügbar.\nBitte Kontakt mit dem Finanzkomitee aufnehmen!").build();
+                    return Response.status(Response.Status.BAD_REQUEST).entity("Die gewünschte Anzahl an Karten ist leider nicht mehr verfügbar.\nBitte Kontakt mit dem Finanzkomitee aufnehmen!").build();
                 }
             }
         }
@@ -107,7 +107,8 @@ public class BestellungController {
         }
 
         int summe = request.anzahlEssenskarten() * EKPREIS + request.anzahlAbendkarten() * AKPREIS;
-        return Response.ok(summe).build();
+        //return Response.ok(summe).build();
+        return Response.status(Response.Status.OK).entity(summe).build();
     }
 
 
@@ -134,7 +135,7 @@ public class BestellungController {
 
 
     public void sendPaymentRequest(String benutzerEmail, int anzahlEssenskarten, int anzahlAbendkarten){
-        String regex = "^(?:(?<vorname>[a-zA-Z]+)\\.)?(?<nachname>[a-zA-Z]+)@jsg-vechelde.de\\.com$";
+        String regex = "^(?:(?<vorname>[a-zA-Z]+)\\.)?(?<nachname>[a-zA-Z]+)@jsg-vechelde\\.de$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(benutzerEmail);
 
@@ -201,7 +202,7 @@ public class BestellungController {
             Bestellung bestellung = bestellungRepository.getBestellung(id);
             qrCodeRepository.createAll(bestellung.id(), bestellung.anzahlEssenskarte(), bestellung.anzahlAbendkarte());
 
-            String regex = "^(?:(?<vorname>[a-zA-Z]+)\\.)?(?<nachname>[a-zA-Z]+)@jsg-vechelde.de\\.com$";
+            String regex = "^(?:(?<vorname>[a-zA-Z]+)\\.)?(?<nachname>[a-zA-Z]+)@jsg-vechelde\\.de$";
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(bestellung.benutzerEmail());
 
