@@ -64,7 +64,65 @@ public class BestellungRepository {
                 );
             }
         }
+    }
 
+
+    public int getAnzahlEK() throws SQLException{
+        int anzahl = 0;
+        String sql = "SELECT SUM(anzahl_essenskarte) FROM bestellung;";
+        try (Connection con = postgres.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    anzahl = rs.getInt(0);
+                }
+            }
+            return 400 - anzahl;
+        }
+    }
+
+    public int getAnzahlEK(String benutzer_id) throws SQLException{
+        int anzahl = 0;
+        String sql = "SELECT anzahl_essenskarte FROM bestellung WHERE benutzer_id = ?;";
+        try (Connection con = postgres.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(0, benutzer_id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    anzahl = rs.getInt(0);
+                }
+            }
+            return anzahl;
+        }
+    }
+
+    public int getAnzahlAK() throws SQLException{
+        int anzahl = 0;
+        String sql = "SELECT SUM(anzahl_abendkarte) FROM bestellung;";
+        try (Connection con = postgres.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    anzahl = rs.getInt(0);
+                }
+            }
+            return 200 - anzahl;
+        }
+    }
+
+    public int getAnzahlAK(String benutzer_id) throws SQLException{
+        int anzahl = 0;
+        String sql = "SELECT anzahl_abendkarte FROM bestellung WHERE benutzer_id = ?;";
+        try (Connection con = postgres.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(0, benutzer_id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    anzahl = rs.getInt(0);
+                }
+            }
+            return anzahl;
+        }
     }
 
 
@@ -143,35 +201,6 @@ public class BestellungRepository {
             ps.setString(1, benutzerId);
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next();
-            }
-        }
-    }
-
-
-    // prüfe ob Bestellungen bezahlt wurden
-    public List<Bestellung> checkPayment() throws SQLException {
-        List<Bestellung> bestellungen = new ArrayList<>();
-
-        String sql = "SELECT id, benutzer_id, benutzer_email, anzahl_essenskarte, anzahl_abendkarte FROM bestellung " +
-                "WHERE bezahlt = true AND email_versendet = false;";
-        try (Connection con = postgres.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    bestellungen.add(new Bestellung(
-                            rs.getInt("id"),
-                            rs.getString("benutzer_id"),
-                            rs.getString("benutzer_email"),
-                            rs.getInt("anzahl_essenskarte"),
-                            rs.getInt("anzahl_abendkarte"),
-                            false
-                    ));
-                }
-                return bestellungen;
-            }
-            catch (Exception e){
-                e.printStackTrace();
-                throw new RuntimeException("MEIN FEHLER::::::", e);
             }
         }
     }

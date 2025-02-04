@@ -31,21 +31,21 @@ public class QrCodeRepository {
     private final String BASEURL = "http://localhost:5173/api/v1/checkin";
     private final String OUTPUTPATH = "output";
 
-    public void createAll(String benutzerID, int anzahlEssenskarte, int anzahlAbendkarte){
-        int anzahlKarten = anzahlAbendkarte + anzahlEssenskarte;
+    public void createAll(int id, int anzahlEssenskarte, int anzahlAbendkarte){
+        int anzahlKarten = anzahlEssenskarte + anzahlAbendkarte;
         String kartenNr;
 
         //creates QRCode for every available card
         for (int i = 1; i <= anzahlKarten; i++) {
-            kartenNr = i + "-" + benutzerID;
+            kartenNr = i + "-" + id;
 
 
             System.out.println(URLEncoder.encode(kartenNr, StandardCharsets.UTF_8));
             //creates the final URL that will be put inside QRCode
-            String url = BASEURL + "/" + "?kartenNr=" + benutzerID;
+            String url = BASEURL + "/" + "?kartenNr=" + id;
 
             try {
-                String filePath = createFilePath(benutzerID, i);
+                String filePath = createFilePath(id, i);
 
                 BitMatrix matrix = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, 250, 250);
                 MatrixToImageWriter.writeToPath(matrix, "jpg", Paths.get(filePath));
@@ -61,19 +61,19 @@ public class QrCodeRepository {
 
     /**
      * Checks if targetfolder and parent directories already exist and creates them if needed
-     * @param benutzerID benutzerId des Nutzers (OAuth)
+     * @param id BestellungsID des Nutzers (OAuth)
      * @param kartenNr kartennummer
      * @return finished file path
      * @throws IOException ioexception
      */
-    private String createFilePath(String benutzerID, int kartenNr) throws IOException {
-        Path folderPath = Paths.get(OUTPUTPATH + "/" + benutzerID);
+    private String createFilePath(int id, int kartenNr) throws IOException {
+        Path folderPath = Paths.get(OUTPUTPATH + "/" + id);
 
         if (!Files.exists(folderPath)) {
             Files.createDirectories(folderPath);
         }
 
-        return OUTPUTPATH + "/" + benutzerID + "/"  + kartenNr + "-" + benutzerID + ".jpg";
+        return OUTPUTPATH + "/" + id + "/"  + kartenNr + "-" + id + ".jpg";
     }
 
 
