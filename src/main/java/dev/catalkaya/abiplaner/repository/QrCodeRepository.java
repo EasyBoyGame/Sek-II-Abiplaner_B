@@ -29,7 +29,7 @@ public class QrCodeRepository {
     AgroalDataSource postgres;
 
     private final String BASEURL = "http://localhost:5173/api/v1/checkin";
-    private final String OUTPUTPATH = "output";
+    private final String OUTPUTPATH = "/home/abiplaner/Abiplaner/qrcodes/";
 
     public void createAll(int id, int anzahlEssenskarte, int anzahlAbendkarte){
         int anzahlKarten = anzahlEssenskarte + anzahlAbendkarte;
