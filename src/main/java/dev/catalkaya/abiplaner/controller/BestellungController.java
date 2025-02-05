@@ -88,7 +88,7 @@ public class BestellungController {
                     bestellungRepository.newBestellung(jwt.getSubject(), jwt.getClaim(Claims.email), request.anzahlEssenskarten(), request.anzahlAbendkarten());
                     sendPaymentRequest(jwt.getClaim(Claims.email), request.anzahlEssenskarten(), request.anzahlAbendkarten());
                 } else {
-                    return Response.status(Response.Status.BAD_REQUEST).entity("Die gewünschte Anzahl an Karten ist leider nicht mehr verfügbar.\nBitte Kontakt mit dem Finanzkomitee aufnehmen!").build();
+                    return Response.status(Response.Status.BAD_REQUEST).build();
                 }
             }
             else {
@@ -97,7 +97,7 @@ public class BestellungController {
                     bestellungRepository.updateBestellung(jwt.getSubject(), request.anzahlEssenskarten(), request.anzahlAbendkarten(), false);
                     sendPaymentRequest(jwt.getClaim(Claims.email), request.anzahlEssenskarten(), request.anzahlAbendkarten());
                 } else {
-                    return Response.status(Response.Status.BAD_REQUEST).entity("Die gewünschte Anzahl an Karten ist leider nicht mehr verfügbar.\nBitte Kontakt mit dem Finanzkomitee aufnehmen!").build();
+                    return Response.status(Response.Status.BAD_REQUEST).build();
                 }
             }
         }
