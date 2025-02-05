@@ -64,6 +64,8 @@ services:
       QUARKUS_OIDC_AUTH_SERVER_URL: https://abiplaner.catalkaya.dev/realms/abiplaner
       QUARKUS_OIDC_CLIENT_ID: abiplaner-backend
       QUARKUS_OIDC_CREDENTIALS_SECRET: 5X4jk2ImTi282Cn7Zd0vsJUJyWpbWLGR
+    volumes:
+      - /home/abiplaner:/home/abiplaner
     ports:
       - 8080:8080
     depends_on:

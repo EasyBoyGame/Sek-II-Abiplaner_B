@@ -31,18 +31,18 @@ public class QrCodeRepository {
     private final String BASEURL = "http://localhost:5173/api/v1/checkin";
     private final String OUTPUTPATH = "/home/abiplaner/Abiplaner/qrcodes/";
 
-    public void createAll(int id, int anzahlEssenskarte, int anzahlAbendkarte){
+    public void createAll(int id, String benutzerId, int anzahlEssenskarte, int anzahlAbendkarte){
         int anzahlKarten = anzahlEssenskarte + anzahlAbendkarte;
         String kartenNr;
 
         //creates QRCode for every available card
         for (int i = 1; i <= anzahlKarten; i++) {
-            kartenNr = i + "-" + id;
+            kartenNr = i + "-" + benutzerId;
 
 
             System.out.println(URLEncoder.encode(kartenNr, StandardCharsets.UTF_8));
-            //creates the final URL that will be put inside QRCode
-            String url = BASEURL + "/" + "?kartenNr=" + id;
+            //creates the final URL that will be put inside the QRCode
+            String url = BASEURL + "/" + "?kartenNr=" + benutzerId;
 
             try {
                 String filePath = createFilePath(id, i);

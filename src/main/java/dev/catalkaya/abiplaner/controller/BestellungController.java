@@ -140,8 +140,8 @@ public class BestellungController {
         Matcher matcher = pattern.matcher(benutzerEmail);
 
         String text = "";
-        String vorname = "";
-        String nachname = "";
+        String vorname;
+        String nachname;
 
         if(matcher.matches()){
             vorname = matcher.group("vorname");
@@ -206,15 +206,15 @@ public class BestellungController {
     public void sendQrCode(int id) {
         try {
             Bestellung bestellung = bestellungRepository.getBestellung(id);
-            qrCodeRepository.createAll(bestellung.id(), bestellung.anzahlEssenskarte(), bestellung.anzahlAbendkarte());
+            qrCodeRepository.createAll(bestellung.id(), bestellung.benutzerId(), bestellung.anzahlEssenskarte(), bestellung.anzahlAbendkarte());
 
             String regex = "^(?:(?<vorname>[a-zA-Z]+)\\.)?(?<nachname>[a-zA-Z]+)@jsg-vechelde\\.de$";
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(bestellung.benutzerEmail());
 
             String text = "";
-            String vorname = "";
-            String nachname = "";
+            String vorname;
+            String nachname;
 
             if(matcher.matches()){
                 vorname = matcher.group("vorname");
@@ -253,7 +253,7 @@ public class BestellungController {
             text += "\n\n\nViel Spaß beim Abiball!\n\n\n\n\n"+ "Adresse:\n" + "Ilseder Hütte 14,\n31241 Ilsede,\nDeutschland";
 
             //String path = "D:/Dokumente/Schule/2_EK_Informatik/AbiplanerQuark/abiplaner/build/classes/java/main/output/" + bestellung.id();
-            String path = "/home/abiplaner/Abiplaner/qrcodes/" + bestellung.id();
+            String path = "/home/abiplaner/Abiplaner/qrcodes/" + bestellung.id();   // Dateipfad wo die QRCodes liegen
             File dir = new File(path);
             File[] files = dir.listFiles();
 
