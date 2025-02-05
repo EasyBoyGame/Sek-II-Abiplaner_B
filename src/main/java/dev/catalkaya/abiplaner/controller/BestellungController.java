@@ -140,8 +140,14 @@ public class BestellungController {
         Matcher matcher = pattern.matcher(benutzerEmail);
 
         String text = "";
-        String vorname = matcher.group("vorname");
-        String nachname = matcher.group("nachname");
+        String vorname = "";
+        String nachname = "";
+
+        if(matcher.matches()){
+            vorname = matcher.group("vorname");
+            nachname = matcher.group("nachname");
+        }
+        else return;
         int summe = anzahlEssenskarten * 50 + anzahlAbendkarten * 20;
         //region if vorname != null
         if(vorname != null && anzahlEssenskarten > 0 && anzahlAbendkarten > 0){
@@ -207,8 +213,14 @@ public class BestellungController {
             Matcher matcher = pattern.matcher(bestellung.benutzerEmail());
 
             String text = "";
-            String vorname = matcher.group("vorname");
-            String nachname = matcher.group("nachname");
+            String vorname = "";
+            String nachname = "";
+
+            if(matcher.matches()){
+                vorname = matcher.group("vorname");
+                nachname = matcher.group("nachname");
+            }
+            else return;
 
             //region if vorname != null
             if(vorname != null && bestellung.anzahlEssenskarte() > 0 && bestellung.anzahlAbendkarte() > 0){

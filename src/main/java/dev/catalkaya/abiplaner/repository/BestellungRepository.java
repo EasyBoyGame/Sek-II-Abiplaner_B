@@ -69,12 +69,12 @@ public class BestellungRepository {
 
     public int getAnzahlEK() throws SQLException{
         int anzahl = 0;
-        String sql = "SELECT SUM(anzahl_essenskarte) FROM bestellung;";
+        String sql = "SELECT SUM(anzahl_essenskarte) AS total FROM bestellung;";
         try (Connection con = postgres.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    anzahl = rs.getInt(0);
+                    anzahl = rs.getInt("total");
                 }
             }
             return 400 - anzahl;
@@ -86,10 +86,10 @@ public class BestellungRepository {
         String sql = "SELECT anzahl_essenskarte FROM bestellung WHERE benutzer_id = ?;";
         try (Connection con = postgres.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(0, benutzer_id);
+            ps.setString(1, benutzer_id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    anzahl = rs.getInt(0);
+                    anzahl = rs.getInt(1);
                 }
             }
             return anzahl;
@@ -98,12 +98,12 @@ public class BestellungRepository {
 
     public int getAnzahlAK() throws SQLException{
         int anzahl = 0;
-        String sql = "SELECT SUM(anzahl_abendkarte) FROM bestellung;";
+        String sql = "SELECT SUM(anzahl_abendkarte) AS total FROM bestellung;";
         try (Connection con = postgres.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    anzahl = rs.getInt(0);
+                    anzahl = rs.getInt("total");
                 }
             }
             return 200 - anzahl;
@@ -115,10 +115,10 @@ public class BestellungRepository {
         String sql = "SELECT anzahl_abendkarte FROM bestellung WHERE benutzer_id = ?;";
         try (Connection con = postgres.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(0, benutzer_id);
+            ps.setString(1, benutzer_id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    anzahl = rs.getInt(0);
+                    anzahl = rs.getInt(1);
                 }
             }
             return anzahl;
