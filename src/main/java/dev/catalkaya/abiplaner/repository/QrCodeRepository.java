@@ -28,7 +28,7 @@ public class QrCodeRepository {
     @Inject
     AgroalDataSource postgres;
 
-    private final String BASEURL = "http://localhost:5173/api/v1/checkin";
+    private final String BASEURL = "https://abiplaner.catalkaya.dev/checkin";
     private final String OUTPUTPATH = "/home/abiplaner/Abiplaner/qrcodes/";
 
     public void createAll(int id, String benutzerId, int anzahlEssenskarte, int anzahlAbendkarte){
@@ -38,7 +38,6 @@ public class QrCodeRepository {
         //creates QRCode for every available card
         for (int i = 1; i <= anzahlKarten; i++) {
             kartenNr = i + "-" + benutzerId;
-
 
             System.out.println(URLEncoder.encode(kartenNr, StandardCharsets.UTF_8));
             //creates the final URL that will be put inside the QRCode

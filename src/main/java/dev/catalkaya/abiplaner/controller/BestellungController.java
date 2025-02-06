@@ -24,9 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.*;
 
-// TODO BESTÄTIGUNGSMAIL AN ALLE EINMAL SENDEN
-// test
-
 
 @Path("/api/v1/bestellung")
 public class BestellungController {

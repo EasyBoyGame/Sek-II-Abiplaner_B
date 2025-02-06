@@ -4,7 +4,9 @@ import dev.catalkaya.abiplaner.repository.QrCodeRepository;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
+import java.lang.annotation.Repeatable;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
@@ -19,16 +21,13 @@ public class QrCodeController {
     @POST
     @Path("{kartenNr:.*}")
     @Consumes(MediaType.TEXT_PLAIN)
-    public void checkInCustomer(@PathParam("kartenNr") String kartenNr){
+    public Response checkInCustomer(@PathParam("kartenNr") String kartenNr){
         try {
-
-            System.out.println(URLDecoder.decode(kartenNr, StandardCharsets.UTF_8));
-
-
             if(qrCodeRepository.validateQrCode(URLDecoder.decode(kartenNr, StandardCharsets.UTF_8))){
-                System.out.println("YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY");
+                return Response.status(Response.Status.OK).build();
+            } else {
+              return Response.status(Response.Status.NOT_FOUND).build();
             }
-            else System.out.println("BOOOOOOOOOOOOOOOOOOOOOOOOOO");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
