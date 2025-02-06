@@ -37,11 +37,11 @@ public class QrCodeRepository {
 
         //creates QRCode for every available card
         for (int i = 1; i <= anzahlKarten; i++) {
-            kartenNr = i + "-" + benutzerId;
+            kartenNr = i + benutzerId;
 
             System.out.println(URLEncoder.encode(kartenNr, StandardCharsets.UTF_8));
             //creates the final URL that will be put inside the QRCode
-            String url = BASEURL + "/" + "?kartenNr=" + benutzerId;
+            String url = BASEURL + "?kartenNr=" + kartenNr;
 
             try {
                 String filePath = createFilePath(id, i);
@@ -96,5 +96,4 @@ public class QrCodeRepository {
             }
         return true;
     }
-
 }

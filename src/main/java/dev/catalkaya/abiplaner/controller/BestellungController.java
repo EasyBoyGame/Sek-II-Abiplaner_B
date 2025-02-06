@@ -195,6 +195,8 @@ public class BestellungController {
         }
         //endregion
 
+        text += "\n\n\n\nDies ist eine automatisch generierte E-Mail auf die nicht geantwortet werden soll!";
+
         mailer.send(Mail.withText(benutzerEmail, "Abiballkarten - Bestätigung deiner Bestellung", text));
     }
 
@@ -247,7 +249,8 @@ public class BestellungController {
                         "im Anhang befinden sich Ihre Abendkarte(n) für die Aftershow ab 22:00 Uhr.";
             }
             //endregion
-            text += "\n\n\nViel Spaß beim Abiball!\n\n\n\n\n"+ "Adresse:\n" + "Ilseder Hütte 14,\n31241 Ilsede,\nDeutschland";
+            text += "\n\n\nViel Spaß beim Abiball!\n\n\n\n\n"+ "Adresse:\n" + "Ilseder Hütte 14,\n31241 Ilsede,\nDeutschland" +
+                    "\n\n\n\nDies ist eine automatisch generierte E-Mail auf die nicht geantwortet werden soll!";
 
             //String path = "D:/Dokumente/Schule/2_EK_Informatik/AbiplanerQuark/abiplaner/build/classes/java/main/output/" + bestellung.id();
             String path = "/home/abiplaner/Abiplaner/qrcodes/" + bestellung.id();   // Dateipfad wo die QRCodes liegen
@@ -267,6 +270,7 @@ public class BestellungController {
             ex.printStackTrace();
         }
     }
+
 
     public String capitilize(String input){
         return Character.toUpperCase(input.charAt(0)) + input.substring(1);
