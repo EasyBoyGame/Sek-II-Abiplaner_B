@@ -150,23 +150,26 @@ public class BestellungController {
         if(vorname != null && anzahlEssenskarten > 0 && anzahlAbendkarten > 0){
             text = "Hallo " + capitilize(vorname) + " " + capitilize(nachname) + ",\n\n" +
                     "deine Bestellung über " + anzahlEssenskarten + " Essenskarten und " + anzahlAbendkarten + " Abendkarten ist bei uns eingegangen.\n" +
-                    "Wir bitten dich den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 zu überweisen.\n\n" +
+                    "Wir bitten dich den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 bis zum 21.02.2025 zu überweisen.\n\n" +
                     "Nach dem Eingang deiner Zahlung, werden die Abiballkarten an dich versendet.\n\n\n" +
                     "Vielen Dank für deine Bestellung! Wir freuen uns auf dich!\n\n" +
+                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird deine Bestellung automatisch gelöscht!" +
                     "Bei Problemen oder Änderungen mit deiner Bestellung, melde dich bitte beim Finanzkomitee.";
         } else if(vorname != null && anzahlEssenskarten > 0 && anzahlAbendkarten == 0){
             text = "Hallo " + capitilize(vorname) + " " + capitilize(nachname) + ",\n\n" +
                     "deine Bestellung über " + anzahlEssenskarten + " Essenskarten ist bei uns eingegangen.\n" +
-                    "Wir bitten dich den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 zu überweisen.\n\n" +
+                    "Wir bitten dich den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 bis zum 21.02.2025 zu überweisen.\n\n" +
                     "Nach dem Eingang deiner Zahlung, werden die Abiballkarten an dich versendet.\n\n\n" +
                     "Vielen Dank für deine Bestellung! Wir freuen uns auf dich!\n\n" +
+                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird deine Bestellung automatisch gelöscht!" +
                     "Bei Problemen oder Änderungen mit deiner Bestellung, melde dich bitte beim Finanzkomitee.";
         } else if(vorname != null && anzahlEssenskarten == 0 && anzahlAbendkarten > 0){
             text = "Hallo " + capitilize(vorname) + " " + capitilize(nachname) + ",\n\n" +
                     "deine Bestellung über " + anzahlAbendkarten + " Abendkarten ist bei uns eingegangen.\n" +
-                    "Wir bitten dich den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 zu überweisen.\n\n" +
+                    "Wir bitten dich den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 bis zum 21.02.2025 zu überweisen.\n\n" +
                     "Nach dem Eingang deiner Zahlung, werden die Abiballkarten an dich versendet.\n\n\n" +
                     "Vielen Dank für deine Bestellung! Wir freuen uns auf dich!\n\n" +
+                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird deine Bestellung automatisch gelöscht!" +
                     "Bei Problemen oder Änderungen mit deiner Bestellung, melde dich bitte beim Finanzkomitee.";
         }
         //endregion
@@ -174,24 +177,27 @@ public class BestellungController {
         if(vorname == null && anzahlEssenskarten > 0 && anzahlAbendkarten > 0){
             text = "Hallo Herr/Frau " + capitilize(nachname) + ",\n\n" +
                     "Ihre Bestellung über " + anzahlEssenskarten + " Essenskarten und " + anzahlAbendkarten + " Abendkarten ist bei uns eingegangen.\n" +
-                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 zu überweisen.\n\n" +
+                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 bis zum 21.02.2025 zu überweisen.\n\n" +
                     "Nach dem Eingang Ihrer Zahlung, werden die Abiballkarten an Sie versendet.\n\n\n" +
                     "Vielen Dank für Ihre Bestellung! Wir freuen uns auf Sie!\n\n" +
+                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird Ihre Bestellung automatisch gelöscht!" +
                     "Bei Problemen oder Änderungen mit Ihrer Bestellung, melden Sie sich bitte beim Finanzkomitee.";
         } else if(vorname != null && anzahlEssenskarten > 0 && anzahlAbendkarten == 0){
             text = "Hallo Herr/Frau " + capitilize(nachname) + ",\n\n" +
                     "Ihre Bestellung über " + anzahlEssenskarten + " Essenskarten ist bei uns eingegangen.\n" +
-                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 zu überweisen.\n\n" +
+                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 bis zum 21.02.2025 zu überweisen.\n\n" +
                     "Nach dem Eingang Ihrer Zahlung, werden die Abiballkarten an Sie versendet.\n\n\n" +
                     "Vielen Dank für Ihre Bestellung! Wir freuen uns auf Sie!\n\n" +
+                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird Ihre Bestellung automatisch gelöscht!" +
                     "Bei Problemen oder Änderungen mit Ihrer Bestellung, melden Sie sich bitte beim Finanzkomitee.";
         } else if(vorname != null && anzahlEssenskarten == 0 && anzahlAbendkarten > 0){
             text = "Hallo Herr/Frau " + capitilize(nachname) + ",\n\n" +
                     "Ihre Bestellung über " + anzahlAbendkarten + " Abendkarten ist bei uns eingegangen.\n" +
-                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 zu überweisen.\n\n" +
+                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 bis zum 21.02.2025 zu überweisen.\n\n" +
                     "Nach dem Eingang Ihrer Zahlung, werden die Abiballkarten an Sie versendet.\n\n\n" +
                     "Vielen Dank für Ihre Bestellung! Wir freuen uns auf Sie!\n\n" +
-                    "Bei Problemen oder Änderungen mit Ihrer Bestellung, melden Sie sich bitte beim Finanzkomitee.";
+                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird Ihre Bestellung automatisch gelöscht!" +
+                    "Bei Problemen oder Änderungen mit Ihrer Bestellung, melden Sie sich bitte beim Finanzkomitee.\n";
         }
         //endregion
 
