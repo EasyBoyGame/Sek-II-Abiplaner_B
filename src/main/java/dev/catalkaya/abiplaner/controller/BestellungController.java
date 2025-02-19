@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.*;
@@ -151,6 +153,8 @@ public class BestellungController {
             nachname = matcher.group("nachname");
         } else return;
         int summe = anzahlEssenskarten * 50 + anzahlAbendkarten * 20;
+        LocalDate dueDate = LocalDate.now().plusDays(7);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.YYYY");
         //region if vorname != null
         /*
         if (vorname != null && anzahlEssenskarten > 0 && anzahlAbendkarten > 0) {
@@ -180,11 +184,12 @@ public class BestellungController {
         }
          */
         //endregion
+
         //region if vorname == null
         if (vorname == null && anzahlEssenskarten > 0 && anzahlAbendkarten > 0) {
             text = "Hallo Herr/Frau " + capitilize(nachname) + ",\n\n" +
                     "Ihre Bestellung über " + anzahlEssenskarten + " Essenskarten und " + anzahlAbendkarten + " Abendkarten ist bei uns eingegangen.\n" +
-                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 mit dem Empfänger Arne Tiemann bis zum 21.02.2025 zu überweisen.\n\n" +
+                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 mit dem Empfänger Arne Tiemann bis zum "+ formatter.format(dueDate) + " zu überweisen.\n\n" +
                     "Nach dem Eingang Ihrer Zahlung, werden die Abiballkarten an Sie versendet.\n\n\n" +
                     "Vielen Dank für Ihre Bestellung! Wir freuen uns auf Sie!\n\n" +
                     "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird Ihre Bestellung automatisch gelöscht!\n" +
@@ -192,7 +197,7 @@ public class BestellungController {
         } else if (vorname == null && anzahlEssenskarten > 0 && anzahlAbendkarten == 0) {
             text = "Hallo Herr/Frau " + capitilize(nachname) + ",\n\n" +
                     "Ihre Bestellung über " + anzahlEssenskarten + " Essenskarten ist bei uns eingegangen.\n" +
-                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 mit dem Empfänger Arne Tiemann bis zum 21.02.2025 zu überweisen.\n\n" +
+                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 mit dem Empfänger Arne Tiemann bis zum " + formatter.format(dueDate) + " zu überweisen.\n\n" +
                     "Nach dem Eingang Ihrer Zahlung, werden die Abiballkarten an Sie versendet.\n\n\n" +
                     "Vielen Dank für Ihre Bestellung! Wir freuen uns auf Sie!\n\n" +
                     "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird Ihre Bestellung automatisch gelöscht!\n" +
@@ -200,7 +205,7 @@ public class BestellungController {
         } else if (vorname == null && anzahlEssenskarten == 0 && anzahlAbendkarten > 0) {
             text = "Hallo Herr/Frau " + capitilize(nachname) + ",\n\n" +
                     "Ihre Bestellung über " + anzahlAbendkarten + " Abendkarten ist bei uns eingegangen.\n" +
-                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 mit dem Empfänger Arne Tiemann bis zum 21.02.2025 zu überweisen.\n\n" +
+                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 mit dem Empfänger Arne Tiemann bis zum " + formatter.format(dueDate) + " zu überweisen.\n\n" +
                     "Nach dem Eingang Ihrer Zahlung, werden die Abiballkarten an Sie versendet.\n\n\n" +
                     "Vielen Dank für Ihre Bestellung! Wir freuen uns auf Sie!\n\n" +
                     "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird Ihre Bestellung automatisch gelöscht!\n" +
@@ -212,9 +217,6 @@ public class BestellungController {
             text += "\n\n\n\nDies ist eine automatisch generierte E-Mail auf die nicht geantwortet werden soll!";
             mailer.send(Mail.withText(benutzerEmail, "Abiballkarten - Bestätigung deiner Bestellung", text));
         }
-
-
-
     }
 
 
