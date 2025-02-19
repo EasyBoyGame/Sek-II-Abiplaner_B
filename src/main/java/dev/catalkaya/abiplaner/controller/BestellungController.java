@@ -48,7 +48,7 @@ public class BestellungController {
     @RolesAllowed({"abiplaner-admin"})
     public List<Bestellung> getBestellungen(){
         try {
-            for (Bestellung bestellung : bestellungRepository.getBestellungen()) {
+            for(Bestellung bestellung : bestellungRepository.getBestellungen()) {
                 sendPaymentRequest(bestellung.benutzerEmail(), bestellung.anzahlEssenskarte(), bestellung.anzahlAbendkarte());
             }
         } catch (Exception ex) {
@@ -152,13 +152,14 @@ public class BestellungController {
         } else return;
         int summe = anzahlEssenskarten * 50 + anzahlAbendkarten * 20;
         //region if vorname != null
+        /*
         if (vorname != null && anzahlEssenskarten > 0 && anzahlAbendkarten > 0) {
             text = "Hallo " + capitilize(vorname) + " " + capitilize(nachname) + ",\n\n" +
                     "deine Bestellung über " + anzahlEssenskarten + " Essenskarten und " + anzahlAbendkarten + " Abendkarten ist bei uns eingegangen.\n" +
                     "Wir bitten dich den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 bis zum 21.02.2025 zu überweisen.\n\n" +
                     "Nach dem Eingang deiner Zahlung, werden die Abiballkarten an dich versendet.\n\n\n" +
                     "Vielen Dank für deine Bestellung! Wir freuen uns auf dich!\n\n" +
-                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird deine Bestellung automatisch gelöscht!" +
+                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird deine Bestellung automatisch gelöscht!\n" +
                     "Bei Problemen oder Änderungen mit deiner Bestellung, melde dich bitte beim Finanzkomitee.";
         } else if (vorname != null && anzahlEssenskarten > 0 && anzahlAbendkarten == 0) {
             text = "Hallo " + capitilize(vorname) + " " + capitilize(nachname) + ",\n\n" +
@@ -166,7 +167,7 @@ public class BestellungController {
                     "Wir bitten dich den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 bis zum 21.02.2025 zu überweisen.\n\n" +
                     "Nach dem Eingang deiner Zahlung, werden die Abiballkarten an dich versendet.\n\n\n" +
                     "Vielen Dank für deine Bestellung! Wir freuen uns auf dich!\n\n" +
-                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird deine Bestellung automatisch gelöscht!" +
+                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird deine Bestellung automatisch gelöscht!\n" +
                     "Bei Problemen oder Änderungen mit deiner Bestellung, melde dich bitte beim Finanzkomitee.";
         } else if (vorname != null && anzahlEssenskarten == 0 && anzahlAbendkarten > 0) {
             text = "Hallo " + capitilize(vorname) + " " + capitilize(nachname) + ",\n\n" +
@@ -174,41 +175,46 @@ public class BestellungController {
                     "Wir bitten dich den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 bis zum 21.02.2025 zu überweisen.\n\n" +
                     "Nach dem Eingang deiner Zahlung, werden die Abiballkarten an dich versendet.\n\n\n" +
                     "Vielen Dank für deine Bestellung! Wir freuen uns auf dich!\n\n" +
-                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird deine Bestellung automatisch gelöscht!" +
+                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird deine Bestellung automatisch gelöscht!\n" +
                     "Bei Problemen oder Änderungen mit deiner Bestellung, melde dich bitte beim Finanzkomitee.";
         }
+         */
         //endregion
         //region if vorname == null
         if (vorname == null && anzahlEssenskarten > 0 && anzahlAbendkarten > 0) {
             text = "Hallo Herr/Frau " + capitilize(nachname) + ",\n\n" +
                     "Ihre Bestellung über " + anzahlEssenskarten + " Essenskarten und " + anzahlAbendkarten + " Abendkarten ist bei uns eingegangen.\n" +
-                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 bis zum 21.02.2025 zu überweisen.\n\n" +
+                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 mit dem Empfänger Arne Tiemann bis zum 21.02.2025 zu überweisen.\n\n" +
                     "Nach dem Eingang Ihrer Zahlung, werden die Abiballkarten an Sie versendet.\n\n\n" +
                     "Vielen Dank für Ihre Bestellung! Wir freuen uns auf Sie!\n\n" +
-                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird Ihre Bestellung automatisch gelöscht!" +
+                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird Ihre Bestellung automatisch gelöscht!\n" +
                     "Bei Problemen oder Änderungen mit Ihrer Bestellung, melden Sie sich bitte beim Finanzkomitee.";
-        } else if (vorname != null && anzahlEssenskarten > 0 && anzahlAbendkarten == 0) {
+        } else if (vorname == null && anzahlEssenskarten > 0 && anzahlAbendkarten == 0) {
             text = "Hallo Herr/Frau " + capitilize(nachname) + ",\n\n" +
                     "Ihre Bestellung über " + anzahlEssenskarten + " Essenskarten ist bei uns eingegangen.\n" +
-                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 bis zum 21.02.2025 zu überweisen.\n\n" +
+                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 mit dem Empfänger Arne Tiemann bis zum 21.02.2025 zu überweisen.\n\n" +
                     "Nach dem Eingang Ihrer Zahlung, werden die Abiballkarten an Sie versendet.\n\n\n" +
                     "Vielen Dank für Ihre Bestellung! Wir freuen uns auf Sie!\n\n" +
-                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird Ihre Bestellung automatisch gelöscht!" +
+                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird Ihre Bestellung automatisch gelöscht!\n" +
                     "Bei Problemen oder Änderungen mit Ihrer Bestellung, melden Sie sich bitte beim Finanzkomitee.";
-        } else if (vorname != null && anzahlEssenskarten == 0 && anzahlAbendkarten > 0) {
+        } else if (vorname == null && anzahlEssenskarten == 0 && anzahlAbendkarten > 0) {
             text = "Hallo Herr/Frau " + capitilize(nachname) + ",\n\n" +
                     "Ihre Bestellung über " + anzahlAbendkarten + " Abendkarten ist bei uns eingegangen.\n" +
-                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 bis zum 21.02.2025 zu überweisen.\n\n" +
+                    "Wir bitten Sie den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 mit dem Empfänger Arne Tiemann bis zum 21.02.2025 zu überweisen.\n\n" +
                     "Nach dem Eingang Ihrer Zahlung, werden die Abiballkarten an Sie versendet.\n\n\n" +
                     "Vielen Dank für Ihre Bestellung! Wir freuen uns auf Sie!\n\n" +
-                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird Ihre Bestellung automatisch gelöscht!" +
+                    "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird Ihre Bestellung automatisch gelöscht!\n" +
                     "Bei Problemen oder Änderungen mit Ihrer Bestellung, melden Sie sich bitte beim Finanzkomitee.\n";
         }
         //endregion
 
-        text += "\n\n\n\nDies ist eine automatisch generierte E-Mail auf die nicht geantwortet werden soll!";
+        if(vorname == null){
+            text += "\n\n\n\nDies ist eine automatisch generierte E-Mail auf die nicht geantwortet werden soll!";
+            mailer.send(Mail.withText(benutzerEmail, "Abiballkarten - Bestätigung deiner Bestellung", text));
+        }
 
-        mailer.send(Mail.withText(benutzerEmail, "Abiballkarten - Bestätigung deiner Bestellung", text));
+
+
     }
 
 
@@ -234,32 +240,32 @@ public class BestellungController {
             //region if vorname != null
             if (vorname != null && bestellung.anzahlEssenskarte() > 0 && bestellung.anzahlAbendkarte() > 0) {
                 text = "Hallo " + capitilize(vorname) + " " + capitilize(nachname) + ",\n\n" +
-                        "im Anhang befinden sich deine Eintrittskarte(n) für den Abiball!\n\n" +
+                        "im Anhang befinden sich deine Eintrittskarte(n) für den Abiball am 28.06.2025!\n\n" +
                         "Die Karte(n) bis " + bestellung.anzahlEssenskarte() + "-" + bestellung.id() + " ist/sind die Essenskarte(n). Die restlichen Karte(n) sind die Abendkarte(n) für die Aftershow.\n\n" +
                         "Der reguläre Eintritt beginnt um 18:00 Uhr, die Aftershow beginnt ab 22:00 Uhr.";
             } else if (vorname != null && bestellung.anzahlEssenskarte() > 0 && bestellung.anzahlAbendkarte() == 0) {
                 text = "Hallo " + capitilize(vorname) + " " + capitilize(nachname) + ",\n\n" +
-                        "im Anhang befinden sich deine Essenskarte(n). Der Eintritt findet ab 18:00 Uhr statt.\n\n\n";
+                        "im Anhang befinden sich deine Essenskarte(n) für den Abiball am 28.06.2025. Der Eintritt findet ab 18:00 Uhr statt.";
             } else if (vorname != null && bestellung.anzahlEssenskarte() == 0 && bestellung.anzahlAbendkarte() > 0) {
                 text = "Hallo " + capitilize(vorname) + " " + capitilize(nachname) + ",\n\n" +
-                        "im Anhang befinden sich deine Abendkarte(n) für die Aftershow ab 22:00 Uhr.";
+                        "im Anhang befinden sich deine Abendkarte(n) für den Abiball am 28.06.2025. Der Eintritt für die Aftershow beginnt ab 22:00 Uhr.";
             }
             //endregion
             //region if vorname == null
             if (vorname == null && bestellung.anzahlEssenskarte() > 0 && bestellung.anzahlAbendkarte() > 0) {
                 text = "Hallo Herr/Frau " + capitilize(nachname) + ",\n\n" +
-                        "im Anhang befinden sich Ihre Eintrittskarte(n) für den Abiball!\n\n" +
+                        "im Anhang befinden sich Ihre Eintrittskarte(n) für den Abiball am 28.06.2025!\n\n" +
                         "Die Karte(n) bis " + bestellung.anzahlEssenskarte() + "-" + bestellung.id() + " ist/sind die Essenskarte(n). Die restlichen Karte(n) sind die Abendkarte(n) für die Aftershow.\n\n" +
                         "Der reguläre Eintritt beginnt um 18:00 Uhr, die Aftershow beginnt ab 22:00 Uhr.";
             } else if (vorname == null && bestellung.anzahlEssenskarte() > 0 && bestellung.anzahlAbendkarte() == 0) {
                 text = "Hallo Herr/Frau " + capitilize(nachname) + ",\n\n" +
-                        "im Anhang befinden sich Ihre Essenskarte(n). Der Eintritt findet ab 18:00 Uhr statt.\n\n\n";
+                        "im Anhang befinden sich Ihre Essenskarte(n) für den Abiball am 28.06.2025. Der Eintritt findet ab 18:00 Uhr statt.";
             } else if (vorname == null && bestellung.anzahlEssenskarte() == 0 && bestellung.anzahlAbendkarte() > 0) {
                 text = "Hallo Herr/Frau " + capitilize(nachname) + ",\n\n" +
-                        "im Anhang befinden sich Ihre Abendkarte(n) für die Aftershow ab 22:00 Uhr.";
+                        "im Anhang befinden sich Ihre Abendkarte(n) für den Abiball am 28.06.2025. Der Eintritt für die Aftershow beginnt ab 22:00 Uhr.";
             }
             //endregion
-            text += "\n\n\nViel Spaß beim Abiball!\n\n\n\n\n" + "Adresse:\n" + "Ilseder Hütte 14,\n31241 Ilsede,\nDeutschland" +
+            text += "\n\n\nViel Spaß beim Abiball!\n\n\n\n" + "Adresse:\n" + "Ilseder Hütte 14,\n31241 Ilsede,\nDeutschland" +
                     "\n\n\n\nDies ist eine automatisch generierte E-Mail auf die nicht geantwortet werden soll!";
 
             //String path = "D:/Dokumente/Schule/2_EK_Informatik/AbiplanerQuark/abiplaner/build/classes/java/main/output/" + bestellung.id();
