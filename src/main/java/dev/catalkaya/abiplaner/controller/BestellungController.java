@@ -50,15 +50,6 @@ public class BestellungController {
     @RolesAllowed({"abiplaner-admin"})
     public List<Bestellung> getBestellungen(){
         try {
-            for(Bestellung bestellung : bestellungRepository.getBestellungen()) {
-                sendPaymentRequest(bestellung.benutzerEmail(), bestellung.anzahlEssenskarte(), bestellung.anzahlAbendkarte());
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new InternalServerErrorException();
-        }
-
-        try {
             return bestellungRepository.getBestellungen();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -156,11 +147,10 @@ public class BestellungController {
         LocalDate dueDate = LocalDate.now().plusDays(7);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.YYYY");
         //region if vorname != null
-        /*
         if (vorname != null && anzahlEssenskarten > 0 && anzahlAbendkarten > 0) {
             text = "Hallo " + capitilize(vorname) + " " + capitilize(nachname) + ",\n\n" +
                     "deine Bestellung über " + anzahlEssenskarten + " Essenskarten und " + anzahlAbendkarten + " Abendkarten ist bei uns eingegangen.\n" +
-                    "Wir bitten dich den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 bis zum 21.02.2025 zu überweisen.\n\n" +
+                    "Wir bitten dich den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 mit dem Empfänger Arne Tiemann bis zum "+ formatter.format(dueDate) + " zu überweisen.\n\n" +
                     "Nach dem Eingang deiner Zahlung, werden die Abiballkarten an dich versendet.\n\n\n" +
                     "Vielen Dank für deine Bestellung! Wir freuen uns auf dich!\n\n" +
                     "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird deine Bestellung automatisch gelöscht!\n" +
@@ -168,7 +158,7 @@ public class BestellungController {
         } else if (vorname != null && anzahlEssenskarten > 0 && anzahlAbendkarten == 0) {
             text = "Hallo " + capitilize(vorname) + " " + capitilize(nachname) + ",\n\n" +
                     "deine Bestellung über " + anzahlEssenskarten + " Essenskarten ist bei uns eingegangen.\n" +
-                    "Wir bitten dich den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 bis zum 21.02.2025 zu überweisen.\n\n" +
+                    "Wir bitten dich den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 mit dem Empfänger Arne Tiemann bis zum "+ formatter.format(dueDate) + " zu überweisen.\n\n" +
                     "Nach dem Eingang deiner Zahlung, werden die Abiballkarten an dich versendet.\n\n\n" +
                     "Vielen Dank für deine Bestellung! Wir freuen uns auf dich!\n\n" +
                     "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird deine Bestellung automatisch gelöscht!\n" +
@@ -176,13 +166,12 @@ public class BestellungController {
         } else if (vorname != null && anzahlEssenskarten == 0 && anzahlAbendkarten > 0) {
             text = "Hallo " + capitilize(vorname) + " " + capitilize(nachname) + ",\n\n" +
                     "deine Bestellung über " + anzahlAbendkarten + " Abendkarten ist bei uns eingegangen.\n" +
-                    "Wir bitten dich den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 bis zum 21.02.2025 zu überweisen.\n\n" +
+                    "Wir bitten dich den offenen Betrag von " + summe + "€ an das Konto mit der IBAN DE45 2505 0000 0202 0775 41 mit dem Empfänger Arne Tiemann bis zum "+ formatter.format(dueDate) + " zu überweisen.\n\n" +
                     "Nach dem Eingang deiner Zahlung, werden die Abiballkarten an dich versendet.\n\n\n" +
                     "Vielen Dank für deine Bestellung! Wir freuen uns auf dich!\n\n" +
                     "Falls der offene Betrag bis zur Frist nicht beglichen wird, wird deine Bestellung automatisch gelöscht!\n" +
                     "Bei Problemen oder Änderungen mit deiner Bestellung, melde dich bitte beim Finanzkomitee.";
         }
-         */
         //endregion
 
         //region if vorname == null
@@ -213,10 +202,8 @@ public class BestellungController {
         }
         //endregion
 
-        if(vorname == null){
-            text += "\n\n\n\nDies ist eine automatisch generierte E-Mail auf die nicht geantwortet werden soll!";
-            mailer.send(Mail.withText(benutzerEmail, "Abiballkarten - Bestätigung deiner Bestellung", text));
-        }
+        text += "\n\n\n\nDies ist eine automatisch generierte E-Mail auf die nicht geantwortet werden soll!";
+        mailer.send(Mail.withText(benutzerEmail, "Abiballkarten - Bestätigung deiner Bestellung", text));
     }
 
 
