@@ -22,14 +22,10 @@ public class QrCodeController {
     @Path("{kartenNr:.*}")
     @Consumes(MediaType.TEXT_PLAIN)
     public Response checkInCustomer(@PathParam("kartenNr") String kartenNr){
-        try {
-            if(qrCodeRepository.validateQrCode(URLDecoder.decode(kartenNr, StandardCharsets.UTF_8))){
-                return Response.status(Response.Status.OK).build();
-            } else {
-              return Response.status(Response.Status.NOT_FOUND).build();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        if(qrCodeRepository.validateQrCode(URLDecoder.decode(kartenNr, StandardCharsets.UTF_8))){
+            return Response.status(Response.Status.OK).build();
+        } else {
+          return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
 }

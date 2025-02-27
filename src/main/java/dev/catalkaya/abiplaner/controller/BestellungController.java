@@ -130,6 +130,7 @@ public class BestellungController {
     }
 
 
+    // sende eine Bestätigungsmail
     public void sendPaymentRequest(String benutzerEmail, int anzahlEssenskarten, int anzahlAbendkarten) {
         String regex = "^(?:(?<vorname>[a-zA-Z]+)\\.)?(?<nachname>[a-zA-Z]+)@jsg-vechelde\\.de$";
         Pattern pattern = Pattern.compile(regex);

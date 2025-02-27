@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Base64;
 
@@ -31,7 +32,7 @@ public class QrCodeRepository {
     private final String BASEURL = "https://abiplaner.catalkaya.dev/checkin";
     private final String OUTPUTPATH = "/home/abiplaner/Abiplaner/qrcodes/";
 
-    public void createAll(int id, String benutzerId, int anzahlEssenskarte, int anzahlAbendkarte){
+    public void createAll(int id, String benutzerId, int anzahlEssenskarte, int anzahlAbendkarte) {
         int anzahlKarten = anzahlEssenskarte + anzahlAbendkarte;
         String kartenNr;
 
@@ -51,7 +52,7 @@ public class QrCodeRepository {
 
                 addCheckIn(kartenNr);
 
-            } catch (WriterException | IOException | SQLException e) {
+            } catch (WriterException | IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -60,40 +61,61 @@ public class QrCodeRepository {
 
     /**
      * Checks if targetfolder and parent directories already exist and creates them if needed
-     * @param id BestellungsID des Nutzers (OAuth)
+     *
+     * @param id       BestellungsID des Nutzers (OAuth)
      * @param kartenNr kartennummer
      * @return finished file path
      * @throws IOException ioexception
      */
-    private String createFilePath(int id, int kartenNr) throws IOException {
-        Path folderPath = Paths.get(OUTPUTPATH + "/" + id);
-
-        if (!Files.exists(folderPath)) {
-            Files.createDirectories(folderPath);
+    private String createFilePath(int id, int kartenNr) {
+        try {
+            Path folderPath = Paths.get(OUTPUTPATH + "/" + id);
+            if (!Files.exists(folderPath)) {
+                Files.createDirectories(folderPath);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
 
-        return OUTPUTPATH + "/" + id + "/"  + kartenNr + "-" + id + ".jpg";
+        return OUTPUTPATH + "/" + id + "/" + kartenNr + "-" + id + ".jpg";
     }
 
 
     // adds the order to the checkIn table for later
-    private void addCheckIn(String kartenNr) throws SQLException {
+    private void addCheckIn(String kartenNr) {
         String sql = "INSERT INTO checkIn(karten_nr) VALUES(?)";
         try (Connection con = postgres.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, kartenNr);
             ps.execute();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 
 
-    public boolean validateQrCode(String kartenNr) throws SQLException{
-        String sql = "UPDATE checkIn SET checked = true WHERE karten_nr = ?";
+    public boolean validateQrCode(String kartenNr) {
+        String sql = "SELECT checked FROM checkin WHERE karten_nr = ?";
         try (Connection con = postgres.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql)){
-                ps.setString(1, kartenNr);
-                ps.execute();
-            }
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, kartenNr);
+
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+
+            if (rs.getBoolean(0)) return false;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        sql = "UPDATE checkIn SET checked = true WHERE karten_nr = ?";
+        try (Connection con = postgres.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, kartenNr);
+            ps.execute();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
         return true;
     }
 }

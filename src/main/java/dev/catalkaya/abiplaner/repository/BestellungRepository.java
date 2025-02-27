@@ -77,7 +77,7 @@ public class BestellungRepository {
                     anzahl = rs.getInt("total");
                 }
             }
-            return 400 - anzahl;
+            return 430 - anzahl;
         }
     }
 
