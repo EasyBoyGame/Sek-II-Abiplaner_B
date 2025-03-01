@@ -112,6 +112,7 @@ public class BestellungController {
     // Bestellung löschen
     @DELETE
     @Path("{bestellungId:\\d+}")
+    @RolesAllowed({"abiplaner-admin"})
     public void deleteBestellung(@PathParam("bestellungId") int bestellungId) {
         try {
             if (!bestellungRepository.existsBestellung(bestellungId)) {

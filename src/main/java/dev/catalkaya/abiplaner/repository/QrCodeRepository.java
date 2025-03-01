@@ -103,12 +103,12 @@ public class QrCodeRepository {
             ResultSet rs = ps.executeQuery();
             rs.next();
 
-            if (rs.getBoolean(0)) return false;
+            if (rs.getBoolean(1)) return false;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
 
-        sql = "UPDATE checkIn SET checked = true WHERE karten_nr = ?";
+        sql = "UPDATE checkin SET checked = true WHERE karten_nr = ?";
         try (Connection con = postgres.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, kartenNr);
