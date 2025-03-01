@@ -101,9 +101,11 @@ public class QrCodeRepository {
             ps.setString(1, kartenNr);
 
             ResultSet rs = ps.executeQuery();
-            rs.next();
 
-            if (rs.getBoolean(1)) return false;
+            if(rs.next()){
+                if(rs.getBoolean(1)) return false;
+            }
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
