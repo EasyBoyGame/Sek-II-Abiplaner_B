@@ -18,10 +18,13 @@ public class QrCodeController {
     @Inject
     QrCodeRepository qrCodeRepository;
 
-    @POST
-    @Path("{kartenNr:.*}")
+    @GET
     @Consumes(MediaType.TEXT_PLAIN)
-    public Response checkInCustomer(@PathParam("kartenNr") String kartenNr){
+    public Response checkInCustomer(@QueryParam("kartenNr") String kartenNr){
+        if(kartenNr == null || kartenNr.isEmpty()){
+            return Response.status(Response.Status.BAD_REQUEST).entity("Missing kartenNr").build();
+        }
+
         if(qrCodeRepository.validateQrCode(URLDecoder.decode(kartenNr, StandardCharsets.UTF_8))){
             return Response.status(Response.Status.OK).build();
         } else {
