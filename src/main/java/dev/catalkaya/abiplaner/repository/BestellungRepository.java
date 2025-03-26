@@ -77,7 +77,9 @@ public class BestellungRepository {
                     anzahl = rs.getInt("total");
                 }
             }
-            return 430 - anzahl;
+
+            if(anzahl > 430) return 0;
+            else return 430 - anzahl;
         }
     }
 
@@ -106,7 +108,8 @@ public class BestellungRepository {
                     anzahl = rs.getInt("total");
                 }
             }
-            return 200 - anzahl;
+            if(anzahl > 215) return 0;
+            else return 215 - anzahl;
         }
     }
 
