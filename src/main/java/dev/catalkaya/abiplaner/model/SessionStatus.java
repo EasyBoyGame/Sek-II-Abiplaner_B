@@ -1,10 +1,10 @@
 package dev.catalkaya.abiplaner.model;
 
-import jakarta.enterprise.context.SessionScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.io.Serializable;
 
-@SessionScoped
+@ApplicationScoped
 public class SessionStatus implements Serializable {
     private static final long serialVersionUID = 1L;
 
