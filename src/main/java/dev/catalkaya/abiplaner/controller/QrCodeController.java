@@ -29,7 +29,7 @@ public class QrCodeController {
         if(kartenNr == null || kartenNr.isEmpty()){
             sessionStatus.setCheckinStatus("failure");
             return Response
-                    .seeOther(java.net.URI.create("https://abiplaner.catalkaya.dev/checkin?status=failure"))
+                    .seeOther(java.net.URI.create("https://abiplaner.catalkaya.dev/checkin"))
                     .build();
             //return Response.status(Response.Status.BAD_REQUEST).entity("Missing kartenNr").build();
         }
@@ -38,12 +38,12 @@ public class QrCodeController {
         if(valid){
             sessionStatus.setCheckinStatus("success");
             return Response
-                    .seeOther(java.net.URI.create("https://abiplaner.catalkaya.dev/checkin?status=success"))
+                    .seeOther(java.net.URI.create("https://abiplaner.catalkaya.dev/checkin"))
                     .build();
         } else {
             sessionStatus.setCheckinStatus("failure");
             return Response
-                    .seeOther(java.net.URI.create("https://abiplaner.catalkaya.dev/checkin?status=failure"))
+                    .seeOther(java.net.URI.create("https://abiplaner.catalkaya.dev/checkin"))
                     .build();
         }
     }

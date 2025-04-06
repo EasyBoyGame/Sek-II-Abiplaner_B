@@ -26,5 +26,4 @@ public class CheckinStatusController {
 
         return Response.ok(status).build();
     }
-
 }
