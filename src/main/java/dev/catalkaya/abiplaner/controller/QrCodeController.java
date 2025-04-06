@@ -22,17 +22,17 @@ public class QrCodeController {
     public Response checkInCustomer(@QueryParam("kartenNr") String kartenNr){
         System.out.println("THIS IS THE CARD NUMBER: " + kartenNr);
         if(kartenNr == null || kartenNr.isEmpty()){
-            return createRedirectResponse("failure", kartenNr);
+            return createRedirectResponse("failure");
             //return Response.status(Response.Status.BAD_REQUEST).entity("Missing kartenNr").build();
         }
 
         boolean valid = qrCodeRepository.validateQrCode(URLDecoder.decode(kartenNr, StandardCharsets.UTF_8));
         System.out.println("THIS IS VALID OR NOT: " + valid);
-        return createRedirectResponse(valid ? "success" : "failure", kartenNr);
+        return createRedirectResponse(valid ? "success" : "failure");
     }
 
-    private Response createRedirectResponse(String status, String kartenNr) {
-        String redirectUrl = "/checkin/" + status + "?kartenNr=" + kartenNr;
+    private Response createRedirectResponse(String status) {
+        String redirectUrl = "/checkin/" + status;
         String cookieValue = String.format("checkinStatus=%s; Path=/checkin; Max-Age=60; HttpOnly; SameSite=Strict", status);
 
         return Response
