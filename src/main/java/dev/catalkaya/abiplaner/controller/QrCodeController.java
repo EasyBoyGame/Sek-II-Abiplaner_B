@@ -20,18 +20,21 @@ public class QrCodeController {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     public Response checkInCustomer(@QueryParam("kartenNr") String kartenNr){
+        System.out.println("THIS IS THE CARD NUMBER: " + kartenNr);
         if(kartenNr == null || kartenNr.isEmpty()){
-            return createRedirectResponse("failure");
+            return createRedirectResponse("failure", kartenNr);
             //return Response.status(Response.Status.BAD_REQUEST).entity("Missing kartenNr").build();
         }
 
         boolean valid = qrCodeRepository.validateQrCode(URLDecoder.decode(kartenNr, StandardCharsets.UTF_8));
-        return createRedirectResponse(valid ? "success" : "failure");
+        System.out.println("THIS IS VALID OR NOT: " + valid);
+        return createRedirectResponse(valid ? "success" : "failure", kartenNr);
     }
 
-    private Response createRedirectResponse(String status) {
-        String redirectUrl = "/checkin/" + status;
+    private Response createRedirectResponse(String status, String kartenNr) {
+        String redirectUrl = "/checkin/" + status + "?kartenNr=" + kartenNr;
         String cookieValue = String.format("checkinStatus=%s; Path=/checkin; Max-Age=60; HttpOnly; SameSite=Strict", status);
+
         return Response
                 .seeOther(URI.create(redirectUrl))
                 .header("Set-Cookie", cookieValue)
