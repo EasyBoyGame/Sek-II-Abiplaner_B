@@ -6,29 +6,31 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import javax.print.attribute.standard.Media;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
 
 @Path("/api/v1/checkin")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class QrCodeController {
 
     @Inject
     QrCodeRepository qrCodeRepository;
 
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @POST
     public Response checkInCustomer(@QueryParam("kartenNr") String kartenNr){
         System.out.println("THIS IS THE CARD NUMBER: " + kartenNr);
+
         if(kartenNr == null || kartenNr.isEmpty()){
-            return createRedirectResponse("failure");
-            //return Response.status(Response.Status.BAD_REQUEST).entity("Missing kartenNr").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("Missing kartenNr").build();
         }
 
         boolean valid = qrCodeRepository.validateQrCode(URLDecoder.decode(kartenNr, StandardCharsets.UTF_8));
         System.out.println("THIS IS VALID OR NOT: " + valid);
-        return createRedirectResponse(valid ? "success" : "failure");
+        return valid ? Response.status(Response.Status.OK).build() : Response.status(Response.Status.BAD_REQUEST).entity("Invalid kartenNr").build();
     }
 
     private Response createRedirectResponse(String status) {
