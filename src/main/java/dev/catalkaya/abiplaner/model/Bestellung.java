@@ -2,7 +2,6 @@ package dev.catalkaya.abiplaner.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Objects;
 
 public record Bestellung(@JsonProperty("id") int id,
                          @JsonProperty("benutzerId") String benutzerId,
