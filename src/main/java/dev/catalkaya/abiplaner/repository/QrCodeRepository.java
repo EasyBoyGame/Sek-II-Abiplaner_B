@@ -113,9 +113,10 @@ public class QrCodeRepository {
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, kartenNr);
             ps.execute();
+            return true;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return true;
+        return false;
     }
 }

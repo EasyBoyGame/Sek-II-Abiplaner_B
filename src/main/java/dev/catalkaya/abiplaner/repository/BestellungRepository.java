@@ -67,6 +67,30 @@ public class BestellungRepository {
     }
 
 
+    // hole eine Bestellung
+    public Bestellung getBestellungByUID(String benutzerId) throws SQLException {
+        String sql = "SELECT id, benutzer_id, benutzer_email, anzahl_essenskarte, anzahl_abendkarte, bezahlt FROM bestellung WHERE benutzer_id = ?;";
+        try (Connection con = postgres.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, benutzerId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) {
+                    throw new NoSuchElementException();
+                }
+                return new Bestellung(
+                        rs.getInt("id"),
+                        rs.getString("benutzer_id"),
+                        rs.getString("benutzer_email"),
+                        rs.getInt("anzahl_essenskarte"),
+                        rs.getInt("anzahl_abendkarte"),
+                        rs.getBoolean("bezahlt")
+                );
+            }
+        }
+    }
+
+
     public int getAnzahlEK() throws SQLException{
         int anzahl = 0;
         String sql = "SELECT SUM(anzahl_essenskarte) AS total FROM bestellung;";
