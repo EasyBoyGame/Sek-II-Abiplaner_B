@@ -23,6 +23,7 @@ public class QrCodeController {
 
     @Inject
     QrCodeRepository qrCodeRepository;
+    @Inject
     BestellungRepository bestellungRepository;
 
     @POST
@@ -43,6 +44,7 @@ public class QrCodeController {
 
         return valid ? Response.status(Response.Status.OK).build() : Response.status(Response.Status.BAD_REQUEST).entity("Invalid kartenNr").build();
     }
+
 
     private boolean istEK(String kartenNr) throws SQLException {
         String[] user = getUserId(kartenNr);
