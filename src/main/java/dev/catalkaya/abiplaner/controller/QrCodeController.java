@@ -20,6 +20,20 @@ public class QrCodeController {
     QrCodeRepository qrCodeRepository;
 
     @POST
+    public Response checkInCustomer(@QueryParam("kartenNr") String kartenNr){
+        System.out.println("THIS IS THE CARD NUMBER: " + kartenNr);
+
+        if(kartenNr == null || kartenNr.isEmpty()){
+            return Response.status(Response.Status.BAD_REQUEST).entity("Missing kartenNr").build();
+        }
+
+        boolean valid = qrCodeRepository.validateQrCode(URLDecoder.decode(kartenNr, StandardCharsets.UTF_8));
+        System.out.println("THIS IS VALID OR NOT: " + valid);
+        return valid ? Response.status(Response.Status.OK).build() : Response.status(Response.Status.BAD_REQUEST).entity("Invalid kartenNr").build();
+    }
+
+    /*
+    @POST
     public Response checkInCustomer(CheckinRequest request){
         System.out.println("THIS IS THE CARD NUMBER: " + request.kartenNr());
 
@@ -31,4 +45,5 @@ public class QrCodeController {
         System.out.println("THIS IS VALID OR NOT: " + valid);
         return valid ? Response.status(Response.Status.OK).build() : Response.status(Response.Status.BAD_REQUEST).entity("Invalid kartenNr").build();
     }
+     */
 }

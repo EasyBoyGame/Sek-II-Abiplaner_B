@@ -2,10 +2,5 @@ abiplaner.catalkaya.dev {
         reverse_proxy /api/* backend:8080
         reverse_proxy /realms/* sso:9090
         reverse_proxy /resources/* sso:9090
-        @checkin path /checkin*
-        handle @checkin {
-                rewrite * /api/v1/checkin
-                reverse_proxy backend:8080
-        }
         reverse_proxy * frontend:3000
 }
